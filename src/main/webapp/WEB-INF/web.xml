@@ -16,6 +16,13 @@
   	<description></description>
   	<servlet-class>com.shoppingcart.controller.SaveAdmin</servlet-class>
   </servlet>
+  <servlet>
+  	<servlet-name>AddAdmin</servlet-name>
+  	<display-name>AddAdmin</display-name>
+  	<description></description>
+  	<servlet-class>com.shoppingcart.controller.AddAdmin</servlet-class>
+  </servlet>
+  
   <servlet-mapping>
   	<servlet-name>SaveMerchantAndCustomer</servlet-name>
   	<url-pattern>/SaveMerchantAndCustomer</url-pattern>
@@ -24,4 +31,9 @@
   	<servlet-name>SaveAdmin</servlet-name>
   	<url-pattern>/SaveAdmin</url-pattern>
   </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>AddAdmin</servlet-name>
+  	<url-pattern>/AddAdmin</url-pattern>
+  </servlet-mapping>
+  
 </web-app>
