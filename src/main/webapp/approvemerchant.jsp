@@ -1,3 +1,4 @@
+<%@page import="com.shoppingcart.dto.Admin"%>
 <%@page import="org.hibernate.internal.build.AllowSysOut"%>
 <%@page import="java.io.PrintWriter"%>
 <%@page import="com.shoppingcart.dto.Merchant"%>
@@ -18,7 +19,7 @@
 <%
 EntityManagerFactory emf = Persistence.createEntityManagerFactory("kunal");
 EntityManager em = emf.createEntityManager();
-
+		
 Query query = em.createQuery("select a from Merchant a where a.status != 'active' ");
 List<Merchant> merchants =  query.getResultList();
 
@@ -53,7 +54,7 @@ for(Merchant merchant:merchants){
 			<td><%=merchant.getId()%></td>
 			<td><%=merchant.getName()%></td>
 			<td><%=merchant.getEmail()%></td>
-			<td><a href="merchantstatusactive.jsp?id=<%=merchant.getId()%>" title="<%=merchant.getStatus()%>">activate</a></td>
+			<td><a href="merchantstatus.jsp?id=<%=merchant.getId()%>" title="<%=merchant.getStatus()%>">activate</a></td>
 			
 		</tr>
 		<%

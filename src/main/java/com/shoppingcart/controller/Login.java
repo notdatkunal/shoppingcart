@@ -25,13 +25,15 @@ import com.shoppingcart.dto.Merchant;
  * Servlet implementation class SaveAdmin
  */
 @WebServlet("/validate")
-public class SaveAdmin extends HttpServlet {
+
+// create save admin page and create account for html
+public class Login extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public SaveAdmin() {
+	public Login() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -85,13 +87,13 @@ public class SaveAdmin extends HttpServlet {
 			Query query = em.createQuery("select a from Admin a where a.email=?1 and a.password=?2");
 			query.setParameter(1, email);
 			query.setParameter(2, password);
-			List<Admin> admins = query.getResultList();
+			List<Admin> admins =(List<Admin>) query.getResultList();
 			result = admins.size() >=1;
 			
 			if (result) {
 				Admin admin = admins.get(0);
 				HttpSession session   = request.getSession();
-				session.setAttribute("admin", admin);
+				session.setAttribute("Admin", admin);
 				rd= request.getRequestDispatcher( "adminoptions.html");
 			}else {
 				pw.print("<script>alert(\"invalid credentials\")</script>");
