@@ -55,7 +55,7 @@ public class SaveMerchantAndCustomer extends HttpServlet {
 		EntityTransaction et = em.getTransaction();
 		
 		
-		if(choice.equals("merchant")) {
+		if("merchant".equals(choice)) {
 			
 			Merchant merchant = new Merchant();
 			merchant.setName(name);
