@@ -1,13 +1,15 @@
 package com.shoppingcart.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.shoppingcart.dto.Admin;
+import com.shoppingcart.dto.Merchant;
 
 /**
  * Servlet implementation class AddAdmin
@@ -36,8 +38,16 @@ public class AddAdmin extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// 
-		
+		//
+//		id email password
+		int id = Integer.parseInt(request.getParameter("id"));
+		String email = request.getParameter("email");
+		String password = request.getParameter("password");
+		Admin admin = new Admin();
+		admin.setId(id);
+		admin.setEmail(email);
+		admin.setPassword(password);
+		admin.setMerchants(new ArrayList<Merchant>());
 	}
 
 }
