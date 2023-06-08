@@ -64,21 +64,26 @@ public class Login extends HttpServlet {
 		boolean result = false;
 		PrintWriter pw = response.getWriter();
 		RequestDispatcher rd = request.getRequestDispatcher("Login.html");
-		if(choice==null) {
+		if (choice == null) {
 			pw.print("<script>alert(\"choose an option for login\")</script>");
 			rd.include(request, response);
-			
-			
+
 		}
 		if (choice.equals("customer")) {
 			Query query = em.createQuery("select a from Customer a where a.email=?1 and a.password=?2");
 			query.setParameter(1, email);
 			query.setParameter(2, password);
 			List<Customer> customer = query.getResultList();
-			result = customer.size() >=1;
+			result = customer.size() >= 1;
 			if (result) {
-				rd= request.getRequestDispatcher("customeroptions.html");
-			}else {
+				if ("active".equals(customer.get(0).getStatus())) {
+					HttpSession session = request.getSession();
+					session.setAttribute("Customer", customer.get(0));
+					rd = request.getRequestDispatcher("customer.jsp");
+				} else {
+					pw.print("<script>alert(\"user is inactive\")</script>");
+				}
+			} else {
 				pw.print("<script>alert(\"invalid credentials\")</script>");
 			}
 
@@ -87,18 +92,17 @@ public class Login extends HttpServlet {
 			Query query = em.createQuery("select a from Admin a where a.email=?1 and a.password=?2");
 			query.setParameter(1, email);
 			query.setParameter(2, password);
-			List<Admin> admins =(List<Admin>) query.getResultList();
-			result = admins.size() >=1;
-			
+			List<Admin> admins = (List<Admin>) query.getResultList();
+			result = admins.size() >= 1;
+
 			if (result) {
 				Admin admin = admins.get(0);
-				HttpSession session   = request.getSession();
+				HttpSession session = request.getSession();
 				session.setAttribute("Admin", admin);
-				rd= request.getRequestDispatcher( "adminoptions.html");
-			}else {
+				rd = request.getRequestDispatcher("admin.html");
+			} else {
 				pw.print("<script>alert(\"invalid credentials\")</script>");
 			}
-			
 
 		}
 		if (choice.equals("merchant")) {
@@ -106,26 +110,27 @@ public class Login extends HttpServlet {
 			query.setParameter(1, email);
 			query.setParameter(2, password);
 			List<Merchant> merchants = query.getResultList();
-			result = merchants.size() >=1;
-			Merchant merchant =null;
+			result = merchants.size() >= 1;
 
 			if (result) {
 
-				merchant= merchants.get(0);
-				rd = request.getRequestDispatcher("merchantoptions.html");
-			}else {
-				pw.print("<script>alert(\"invalid credentials\")</script>");
+				Merchant merchant = merchants.get(0);
+				if ("active".equals(merchant.getStatus())) {
+					HttpSession session = request.getSession();
+					session.setAttribute("Merchant", merchant);
+					rd = request.getRequestDispatcher("merchant.jsp");
 				}
-			if (merchant != null && merchant.getStatus().equals("inactive")) {
-				pw.print("<script>alert(\"inactive account\")</script>");
+				if (merchant.getStatus().equals("inactive"))
+					pw.print("<script>alert(\"inactive account\")</script>");
+
+				if (merchant.getStatus().equals("blocked"))
+					pw.print("<script>alert(\"blocked account\")</script>");
+			} else {
+				pw.print("<script>alert(\"invalid credentials\")</script>");
 			}
-			if (merchant != null && merchant.getStatus().equals("blocked")) {
-				pw.print("<script>alert(\"blocked account\")</script>");
-			}
-			
 
 		}
-		
+
 		rd.include(request, response);
 	}
 

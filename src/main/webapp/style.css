@@ -1,5 +1,9 @@
-@charset "ISO-8859-1";
-
+input[type="radio"] {
+	/* Add your CSS styles here */
+	/* For example, you can change the background color */
+	background-color: yellow;
+	display: inline;
+}
 
 input {
 	display: block;

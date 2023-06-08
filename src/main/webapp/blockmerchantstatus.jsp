@@ -15,20 +15,21 @@
 <title>Insert title here</title>
 </head>
 <body>
+
 <%
 EntityManagerFactory emf = Persistence.createEntityManagerFactory("kunal");
 EntityManager em = emf.createEntityManager();
 EntityTransaction et = em.getTransaction();
 int id = Integer.parseInt(request.getParameter("id"));
 Merchant merchant = em.find(Merchant.class, id);
-merchant.setStatus("active");
+merchant.setStatus("blocked");
 Admin admin = (Admin)session.getAttribute("Admin");
 
 merchant.setAdmin(admin);
 et.begin();
 em.merge(merchant);	
 et.commit();
-request.getRequestDispatcher("approve.jsp").forward(request, response);
+request.getRequestDispatcher("blockmerchants.jsp").forward(request, response);
 
 
 %>

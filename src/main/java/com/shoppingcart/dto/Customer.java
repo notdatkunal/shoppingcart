@@ -17,13 +17,13 @@ import javax.persistence.OneToOne;
 @Entity
 public class Customer {
 	@OneToOne
-	private Customer customer;
-	public Customer getCustomer() {
-		return customer;
+	private Cart cart;
+	public Cart getCart() {
+		return cart;
 	}
 
-	public void setCustomer(Customer customer) {
-		this.customer = customer;
+	public void setCart(Cart cart) {
+		this.cart = cart;
 	}
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

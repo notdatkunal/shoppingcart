@@ -1,12 +1,10 @@
-<%@page import="com.shoppingcart.dto.Admin"%>
-<%@page import="org.hibernate.internal.build.AllowSysOut"%>
-<%@page import="java.io.PrintWriter"%>
-<%@page import="com.shoppingcart.dto.Merchant"%>
 <%@page import="java.util.List"%>
 <%@page import="javax.persistence.Query"%>
 <%@page import="javax.persistence.EntityManager"%>
 <%@page import="javax.persistence.Persistence"%>
 <%@page import="javax.persistence.EntityManagerFactory"%>
+<%@page import="java.io.PrintWriter"%>
+<%@page import="com.shoppingcart.dto.Merchant"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
@@ -16,18 +14,19 @@
 <title>Insert title here</title>
 </head>
 <body>
+
 <%
 EntityManagerFactory emf = Persistence.createEntityManagerFactory("kunal");
 EntityManager em = emf.createEntityManager();
 		
-Query query = em.createQuery("select a from Merchant a where a.status != 'active' ");
+Query query = em.createQuery("select a from Merchant a where a.status !='active' ");
 List<Merchant> merchants =  query.getResultList();
 
 
 if(merchants.size()==0){
 	PrintWriter pw = response.getWriter();
 	pw.print("<script>alert(\"no merchants to be approved\")</script>");
-	request.getRequestDispatcher("adminoptions.html").include(request, response);
+	request.getRequestDispatcher("admin.html").include(request, response);
 	
 }else{
 %>
@@ -63,6 +62,7 @@ for(Merchant merchant:merchants){
 	</tbody>
 	
 </table>
+
 
 </body>
 </html>

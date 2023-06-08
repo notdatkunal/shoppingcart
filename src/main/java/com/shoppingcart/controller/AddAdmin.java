@@ -81,6 +81,7 @@ public class AddAdmin extends HttpServlet {
 		PrintWriter printWriter = response.getWriter();
 		printWriter.print("<script> alert(\"Account created Succesufully \") </script>");
 		response.setContentType("text/html");
+		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("Login.html");
 		dispatcher.include(request, response);
 	}

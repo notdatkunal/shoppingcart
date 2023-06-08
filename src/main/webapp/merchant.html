@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="ISO-8859-1">
+	<title>Insert title here</title>
+</head>
+
+<body>
+
+
+	<button onclick="add.showModal()">add Product</button>
+	<button onclick="pune()">view products</button>
+	<button onclick="pune()">delete product</button>
+	<button onclick="pune()">update product </button>
+
+	<dialog id="add">
+	<button onclick="add.close()">x</button>
+		<form action="AddItem" method="POST">
+			<label for="image">Enter item image:</label>
+			<input type="file" name="image" id="">
+			<br>
+			<label for="itemname">Enter item name:</label>
+			<input id="itemname" name="itemname" placeholder="Text" type="text" />
+			<br>
+			<label for="category">Enter Category:</label>
+			<input id="category" name="category" placeholder="Text" type="text" />
+			<br>
+			<label for="price">Enter Price:</label>
+			<input id="price" name="price" placeholder="Text" type="number" />
+			<br>
+			<label for="stock">amount of stock:</label>
+			<input id="stock" name="stock" placeholder="Text" type="stock" />
+
+			<input type="submit" value="ADD" id="button-1" />
+		</form>
+	</dialog>
+	<div id="content"></div>
+	<script type="text/javascript">
+
+		function search() {
+			document.getElementById("content").innerHTML = "hello";
+
+		}
+
+	</script>
+
+
+</body>
+
+</html>

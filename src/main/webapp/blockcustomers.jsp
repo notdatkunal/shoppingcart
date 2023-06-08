@@ -1,5 +1,5 @@
 <%@page import="java.io.PrintWriter"%>
-<%@page import="com.shoppingcart.dto.Merchant"%>
+<%@page import="com.shoppingcart.dto.Customer"%>
 <%@page import="java.util.List"%>
 <%@page import="javax.persistence.Query"%>
 <%@page import="javax.persistence.EntityManager"%>
@@ -19,13 +19,13 @@
 EntityManagerFactory emf = Persistence.createEntityManagerFactory("kunal");
 EntityManager em = emf.createEntityManager();
 		
-Query query = em.createQuery("select a from Merchant a where a.status = 'active' ");
-List<Merchant> merchants =  query.getResultList();
+Query query = em.createQuery("select a from Customer a where a.status = 'active' ");
+List<Customer> customers =  query.getResultList();
 
 
-if(merchants.size()==0){
+if(customers.size()==0){
 	PrintWriter pw = response.getWriter();
-	pw.print("<script>alert(\"no merchants to be blocked\")</script>");
+	pw.print("<script>alert(\"no customers to be blocked\")</script>");
 	request.getRequestDispatcher("admin.html").include(request, response);
 	
 }else{
@@ -35,25 +35,25 @@ if(merchants.size()==0){
 <table id="table-1" border="1px" cellspacing="5px">
 	<thead>
 		<tr>
-			<th>merchants id</th>
-			<th>merchants name</th>
+			<th>customer id</th>
+			<th>customer name</th>
 			<th>email</th>
 			<th>status</th>
 		</tr>
 	</thead>
 	<tbody>
 	<% 
-for(Merchant merchant:merchants){
+for(Customer customer:customers){
 	
 	
 	
 	
 %>
 		<tr>
-			<td><%=merchant.getId()%></td>
-			<td><%=merchant.getName()%></td>
-			<td><%=merchant.getEmail()%></td>
-			<td><a href="blockmerchantstatus.jsp?id=<%=merchant.getId()%>" title="<%=merchant.getStatus()%>">block</a></td>
+			<td><%=customer.getId()%></td>
+			<td><%=customer.getName()%></td>
+			<td><%=customer.getEmail()%></td>
+			<td><a href="blockcustomerstatus.jsp?id=<%=customer.getId()%>" title="<%=customer.getStatus()%>">block</a></td>
 			
 		</tr>
 		<%
@@ -62,6 +62,5 @@ for(Merchant merchant:merchants){
 	</tbody>
 	
 </table>
-
 </body>
 </html>

@@ -2,6 +2,8 @@ package com.shoppingcart.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -14,8 +16,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.shoppingcart.dto.Cart;
 import com.shoppingcart.dto.Customer;
+import com.shoppingcart.dto.Item;
 import com.shoppingcart.dto.Merchant;
+import com.shoppingcart.dto.Product;
 
 /**
  * Servlet implementation class SaveMerchantAndCustomer
@@ -63,27 +68,39 @@ public class SaveMerchantAndCustomer extends HttpServlet {
 			merchant.setPassword(passworrd);
 			merchant.setMobilenumber(Long.parseLong(mobilenumber));
 			merchant.setStatus("inactive");
+			merchant.setProducts(new ArrayList<Product>());
 			et.begin();
 			em.persist(merchant);
 			et.commit();
 			request.getRequestDispatcher("Login.html").forward(request, response);
-			
-		}else {
+			return;
+		}
+		
+		if("customer".equals(choice)){
 			
 			Customer customer = new Customer();
+			Cart cart = new Cart();
+			cart.setTotalPrice(0);
+			List<Item> items = new ArrayList<Item>();
+			cart.setItems(items);
+			cart.setCustomer(customer);
+			customer.setCart(cart);
 			customer.setName(name);
 			customer.setEmail(email);
 			customer.setPassword(passworrd);
 			customer.setMobilenumber(Long.parseLong(mobilenumber));
-			customer.setStatus("inactive");
+			customer.setStatus("active");
 			et.begin();
 			em.persist(customer);
+			em.persist(cart);
+			
 			et.commit();
 			PrintWriter printWriter = response.getWriter();
 			printWriter.print("<script> alert(\"Account created Succesufully \") </script>");
 			response.setContentType("text/html");
 			RequestDispatcher dispatcher = request.getRequestDispatcher("Login.html");
 			dispatcher.include(request, response);
+			return;
 		}
 		
 		
