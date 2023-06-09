@@ -95,7 +95,7 @@ public class Item {
 		this.product = product;
 		this.name = product.getName();
 		this.category = product.getCategory();
-		this.price = product.getPrice();
+		this.price = quantity*product.getPrice();
 		this.quantity = quantity;
 	}
 	

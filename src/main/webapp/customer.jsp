@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<%@page import="com.shoppingcart.dto.Cart"%>
 <%@page import="com.shoppingcart.dto.Customer"%>
 <%@page import="com.shoppingcart.dto.Item"%>
 <%@page import="java.util.Base64"%>
@@ -16,12 +17,15 @@
 </head>
 
 <body><%
+int total = 0;
 EntityManagerFactory emf = Persistence.createEntityManagerFactory("kunal");
 EntityManager em = emf.createEntityManager();
 Query productquery = em.createQuery("Select p from Product p");
 Customer customer = (Customer)session.getAttribute("Customer");
+Cart cart = customer.getCart();
 List<Product> products =   productquery.getResultList();
 List<Item> items = customer.getCart().getItems();
+ items = em.createQuery("Select i from Item i").getResultList();
 products = products.subList(0, products.size()>10?10:products.size());
 
 %>
@@ -38,9 +42,8 @@ products = products.subList(0, products.size()>10?10:products.size());
 
 	
 
-	<button onclick="">remove items from cart</button>
 	<button onclick="showcart.showModal()">show cart</button>
-
+	<a href="LogOut">LogOut</a>
 
 <%if(products.size()==0){ 
 
@@ -56,6 +59,7 @@ products = products.subList(0, products.size()>10?10:products.size());
 			<tr>
 				<th>Image</th>
 				<th>Name</th>
+				<th>Category</th>
 				<th>Price</th>
 				<th>Stock</th>
 				<th>Merchant Name</th>
@@ -71,6 +75,7 @@ products = products.subList(0, products.size()>10?10:products.size());
 			<tr>
 				<td><img style="width: 200px; height: 200px;" src="data:image/png;base64, <%= base64ImageData %>" alt="Image"></td>
 				<td><%=product.getName() %></td>
+				<td><%=product.getCategory() %></td>
 				<td><%=product.getPrice() %></td>
 				<td><%=product.getStock()!=0?" only \""+product.getStock()+"\" left in stock":"product out of stock" %></td>
 				<td><%=product.getMerchant().getName() %></td>
@@ -86,27 +91,26 @@ products = products.subList(0, products.size()>10?10:products.size());
 	<dialog id="showcart">
 		<button onclick="showcart.close()">x</button>
 		
-<%if(items.size()==0){ 
-
-	%>
-	<h1 style="color: red;">no products to be displayed</h1>
-	
-	<%
-}else{
-
-%>
+		
 	<table id="items-table"  border="1px" cellspacing="5px">
 		<thead>
 			
 		</thead>
 		<tbody>
-	<%for(Item item:items){ 
+	<%
+	
+	for(Item item:items){ 
+		if(!cart.equals(item.getCart())){
+			continue;
+		}
 		byte[] image = item.getProduct().getImageData();
 		String base64ImageData = Base64.getEncoder().encodeToString(image);
+		total+=item.getQuantity()*item.getPrice();
 	%>
 			<tr>
 				<td><img style="width: 100px; height: 100px;" src="data:image/png;base64, <%= base64ImageData %>" alt="Image"></td>
 				<td><%=item.getName() %></td>
+				
 				<td><%=item.getPrice() %></td>
 				<td><%=item.getQuantity() %></td>
 				<td><button onclick="remove(<%=item.getId()%>)">remove</button></td>
@@ -115,7 +119,15 @@ products = products.subList(0, products.size()>10?10:products.size());
 		</tbody>
 		
 	</table>
+<%
+
+if(total==0){
+
+%>
+	<h1 style="color: red;">no products to be displayed</h1>
+
 <%} %>
+<div style="margin-top: 10px;">Total Price : <%=total %></div>
 
 	</dialog>
 	

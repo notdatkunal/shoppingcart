@@ -2,6 +2,7 @@ package com.shoppingcart.dto;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -54,6 +55,12 @@ public class Cart {
 
 	public Cart() {
 		// TODO Auto-generated constructor stub
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if(obj!=null) {return this.id==((Cart)obj).getId();}
+		
+		return false;
 	}
 
 }

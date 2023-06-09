@@ -1,6 +1,7 @@
 package com.shoppingcart.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.shoppingcart.dto.Cart;
 import com.shoppingcart.dto.Customer;
 import com.shoppingcart.dto.Item;
 import com.shoppingcart.dto.Product;
@@ -43,16 +45,21 @@ public class AddToCart extends HttpServlet {
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction et = em.getTransaction();
 		try {
-			Item item =  ItemManager.getItem(em.find(Product.class, id), quantity);
 			Customer customer = (Customer)session.getAttribute("Customer");
 			System.out.println(customer);
-			customer.getCart().getItems().add(item);
+			Cart cart = customer.getCart();
+			Item item =  ItemManager.getItem(em.find(Product.class, id), quantity,cart);
+			
+			List<Item>items = cart.getItems();
+			cart.setItems(items);
 			item.setCart(customer.getCart());
+			customer.setCart(cart);
 			et.begin();
 			em.persist(item);
-			em.merge(customer.getCart());
+			em.merge(cart);
 			em.merge(customer);
 			et.commit();
+			session.setAttribute("Customer", customer);
 		} catch (ItemException e) {
 			//out of stock
 			response.getWriter().print("<script>alert(\"not enough quantity\")</script>");
